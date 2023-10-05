@@ -1,0 +1,791 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfcasestudy3smriti"
+		},
+		"AzureBlobStorageCasestudy3_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageCasestudy3'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorageCasestudy3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorageCasestudy3_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSinputFeatures')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Case Study 3"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Features data set.csv",
+						"container": "inputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Store",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Temperature",
+						"type": "String"
+					},
+					{
+						"name": "Fuel_Price",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown1",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown2",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown3",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown4",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown5",
+						"type": "String"
+					},
+					{
+						"name": "CPI",
+						"type": "String"
+					},
+					{
+						"name": "Unemployment",
+						"type": "String"
+					},
+					{
+						"name": "IsHoliday",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSinputSales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Case Study 3"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "sales data-set.csv",
+						"container": "inputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Store",
+						"type": "String"
+					},
+					{
+						"name": "Dept",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Weekly_Sales",
+						"type": "String"
+					},
+					{
+						"name": "IsHoliday",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSinputStores')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Case Study 3"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "stores data-set.csv",
+						"container": "inputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Store",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Size",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSjoin1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "part-00000-ba7b3ff7-31f3-4e58-84bc-17dcaf426014-c000.csv",
+						"container": "outputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "10",
+						"type": "String"
+					},
+					{
+						"name": "05/02/2010",
+						"type": "String"
+					},
+					{
+						"name": "42.31",
+						"type": "String"
+					},
+					{
+						"name": "2.572",
+						"type": "String"
+					},
+					{
+						"name": "NA4",
+						"type": "String"
+					},
+					{
+						"name": "NA5",
+						"type": "String"
+					},
+					{
+						"name": "NA6",
+						"type": "String"
+					},
+					{
+						"name": "NA7",
+						"type": "String"
+					},
+					{
+						"name": "NA8",
+						"type": "String"
+					},
+					{
+						"name": "211.0963582",
+						"type": "String"
+					},
+					{
+						"name": "8.106",
+						"type": "String"
+					},
+					{
+						"name": "FALSE",
+						"type": "String"
+					},
+					{
+						"name": "112",
+						"type": "String"
+					},
+					{
+						"name": "24924.5",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSjoin1features')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Case Study Joins"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "part-00000-bb62b77d-1053-46f0-aac0-36398ce64402-c000.csv",
+						"container": "outputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Store",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Temperature",
+						"type": "String"
+					},
+					{
+						"name": "Fuel_Price",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown1",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown2",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown3",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown4",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown5",
+						"type": "String"
+					},
+					{
+						"name": "CPI",
+						"type": "String"
+					},
+					{
+						"name": "Unemployment",
+						"type": "String"
+					},
+					{
+						"name": "IsHoliday",
+						"type": "String"
+					},
+					{
+						"name": "Dept",
+						"type": "String"
+					},
+					{
+						"name": "Weekly_Sales",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSoutputfinal')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Case Study Joins"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "part-00003-ba79f7b4-f1c4-4338-bc00-aa81da6fb33f-c000.csv",
+						"container": "outputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSsalesfeatures')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageCasestudy3",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Case Study 3"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "outputretail"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Store",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Temperature",
+						"type": "String"
+					},
+					{
+						"name": "Fuel_Price",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown1",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown2",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown3",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown4",
+						"type": "String"
+					},
+					{
+						"name": "MarkDown5",
+						"type": "String"
+					},
+					{
+						"name": "CPI",
+						"type": "String"
+					},
+					{
+						"name": "Unemployment",
+						"type": "String"
+					},
+					{
+						"name": "IsHoliday",
+						"type": "String"
+					},
+					{
+						"name": "Dept",
+						"type": "String"
+					},
+					{
+						"name": "Weekly_Sales",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Size",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageCasestudy3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DSinputFeatures",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DSinputSales",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DSsalesfeatures",
+								"type": "DatasetReference"
+							},
+							"name": "salesfeatures"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Store as string,",
+						"          Date as string,",
+						"          Temperature as string,",
+						"          Fuel_Price as string,",
+						"          MarkDown1 as string,",
+						"          MarkDown2 as string,",
+						"          MarkDown3 as string,",
+						"          MarkDown4 as string,",
+						"          MarkDown5 as string,",
+						"          CPI as string,",
+						"          Unemployment as string,",
+						"          IsHoliday as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source(output(",
+						"          Store as string,",
+						"          Dept as string,",
+						"          Date as string,",
+						"          Weekly_Sales as string,",
+						"          IsHoliday as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source2",
+						"source1, source2 join(source1@Store == source2@Store",
+						"     && source1@Date == source2@Date",
+						"     && source1@IsHoliday == source2@IsHoliday,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     partitionBy('hash', 1),",
+						"     broadcast: 'auto')~> join1",
+						"join1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Store as string,",
+						"          Date as string,",
+						"          Temperature as string,",
+						"          Fuel_Price as string,",
+						"          MarkDown1 as string,",
+						"          MarkDown2 as string,",
+						"          MarkDown3 as string,",
+						"          MarkDown4 as string,",
+						"          MarkDown5 as string,",
+						"          CPI as string,",
+						"          Unemployment as string,",
+						"          IsHoliday as string,",
+						"          Dept as string,",
+						"          Weekly_Sales as string,",
+						"          Type as string,",
+						"          Size as string",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> salesfeatures"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DSinputFeatures')]",
+				"[concat(variables('factoryId'), '/datasets/DSinputSales')]",
+				"[concat(variables('factoryId'), '/datasets/DSsalesfeatures')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DSjoin1features",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DSinputStores",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DSoutputfinal",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Store as string,",
+						"          Date as string,",
+						"          Temperature as string,",
+						"          Fuel_Price as string,",
+						"          MarkDown1 as string,",
+						"          MarkDown2 as string,",
+						"          MarkDown3 as string,",
+						"          MarkDown4 as string,",
+						"          MarkDown5 as string,",
+						"          CPI as string,",
+						"          Unemployment as string,",
+						"          IsHoliday as string,",
+						"          Dept as string,",
+						"          Weekly_Sales as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source(output(",
+						"          Store as string,",
+						"          Type as string,",
+						"          Size as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source2",
+						"source1, source2 join(source1@Store == source2@Store,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DSjoin1features')]",
+				"[concat(variables('factoryId'), '/datasets/DSinputStores')]",
+				"[concat(variables('factoryId'), '/datasets/DSoutputfinal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_finaljoin')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flowfinal",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-10-05T06:44:00Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_joinfeatures')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"salesfeatures": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-10-05T05:45:59Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		}
+	]
+}
